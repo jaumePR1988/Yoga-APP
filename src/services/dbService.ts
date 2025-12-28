@@ -31,6 +31,14 @@ export const dbService = {
         });
     },
 
+    updateUserProfile: async (uid: string, data: Partial<User>) => {
+        const docRef = doc(db, 'users', uid);
+        return updateDoc(docRef, {
+            ...data,
+            updatedAt: Timestamp.now()
+        });
+    },
+
     // Clases
     getClasses: (callback: (classes: YogaClass[]) => void) => {
         const q = query(collection(db, 'classes'));

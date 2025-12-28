@@ -13,6 +13,16 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin, onSetupTestUsers, isSett
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  const fillCredentials = (role: 'student' | 'coach') => {
+    if (role === 'student') {
+      setEmail('alumno@namaste.com');
+      setPassword('yoga1234');
+    } else {
+      setEmail('coach@namaste.com');
+      setPassword('yoga1234');
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
@@ -24,99 +34,105 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin, onSetupTestUsers, isSett
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-2xl bg-[#fdfcfb]">
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-2xl bg-[#F9F7F2] dark:bg-[#191512] font-display">
       {/* Background Image / Header Area */}
-      <div className="relative w-full h-[280px]">
+      <div className="relative w-full h-[320px]">
         <div
           className="absolute inset-0 w-full h-full bg-center bg-no-repeat bg-cover"
           style={{
-            backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDS1o88Mv4D8xNZ4Uh9UiWuz0L4fKiRD2BOehqwXOQMU_KlqhNPEeDeYbHepcxT-OKv1nIykYm49lowBtNQi_3zSjwEOSi5LhxGhbB6b5avIwzNJHNr2B4mi3_EV-xQfLPkIsWNEDIoWKBeryscnd0EvBucFENm3zaTjMUPH5ZclVX3lwzTc4OhB7cXfy84wrfm7zMRFY9bLxpVfnMmZ6IgpIVr1I4gHWdHZhIeiUdFyfAueom3TdbC2UrMJRrOsrrMTlTHhs2XyTlf")'
+            backgroundImage: 'url("https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&q=80&w=1000")'
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#fdfcfb]/90"></div>
-        </div>
-
-        {/* Top Controls */}
-        <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-center z-10">
-          <div className="w-10 h-10 rounded-full bg-white/30 backdrop-blur-md flex items-center justify-center text-white">
-            <span className="material-symbols-outlined">self_improvement</span>
-          </div>
-          <button className="text-white font-medium text-sm backdrop-blur-sm bg-black/10 px-3 py-1 rounded-full">Ayuda</button>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-[#F9F7F2] dark:to-[#191512]"></div>
         </div>
       </div>
 
       {/* Main Form Content */}
-      <div className="flex-1 flex flex-col px-6 relative -mt-10 z-20 bg-[#fdfcfb] rounded-t-3xl">
-        <div className="mb-8 text-center mt-6">
-          <span className="inline-block py-1 px-3 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wide uppercase mb-2">Namasté</span>
-          <h1 className="text-3xl font-bold text-[#292524] mb-2 tracking-tight">Bienvenido de nuevo</h1>
-          <p className="text-[#78716c] text-sm">Ingresa a tu espacio de calma y equilibrio.</p>
+      <div className="flex-1 flex flex-col px-8 relative -mt-20 z-20">
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white dark:bg-[#191512] shadow-xl mb-4 p-1 ring-1 ring-black/5">
+            <div className="w-full h-full rounded-full bg-[#A17A57]/10 flex items-center justify-center">
+              <span className="material-symbols-outlined text-[#A17A57] text-3xl">self_improvement</span>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-[#292524] dark:text-white mb-2 tracking-tight">Bienvenido</h1>
+          <p className="text-[#78716c] dark:text-[#a8a29e] text-sm">Ingresa a tu espacio de calma y equilibrio.</p>
+        </div>
+
+        {/* Quick Login Shortcuts (Dev/Demo) */}
+        <div className="flex gap-2 justify-center mb-6">
+          <button onClick={() => fillCredentials('student')} className="text-[10px] uppercase font-bold tracking-wider text-gray-400 hover:text-primary transition-colors border border-gray-200 dark:border-gray-800 rounded-full px-3 py-1">
+            Soy Alumno
+          </button>
+          <button onClick={() => fillCredentials('coach')} className="text-[10px] uppercase font-bold tracking-wider text-gray-400 hover:text-primary transition-colors border border-gray-200 dark:border-gray-800 rounded-full px-3 py-1">
+            Soy Coach
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5 w-full">
           {error && (
             <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="p-3 bg-red-50 text-red-500 text-xs rounded-xl border border-red-100 flex items-center gap-2"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-300 text-xs rounded-xl border border-red-100 dark:border-red-900/30 flex items-center gap-2 font-medium"
             >
               <span className="material-symbols-outlined text-sm">error</span>
               {error}
             </motion.div>
           )}
 
-          <div className="group">
-            <label className="block text-sm font-semibold text-[#292524] mb-2 pl-1" htmlFor="email">Correo electrónico</label>
-            <div className="relative flex items-center">
-              <span className="absolute left-4 text-[#78716c] material-symbols-outlined">mail</span>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-[#292524] dark:text-white uppercase tracking-wider pl-1" htmlFor="email">Correo electrónico</label>
+            <div className="relative group">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#A17A57] material-symbols-outlined">mail</span>
               <input
                 id="email"
                 type="email"
                 placeholder="tu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full h-14 pl-12 pr-4 bg-white border border-gray-200 rounded-2xl text-base outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-gray-400"
+                className="w-full h-14 pl-12 pr-4 bg-white dark:bg-[#26201B] border-2 border-transparent focus:border-[#A17A57]/20 rounded-2xl text-base outline-none focus:ring-4 focus:ring-[#A17A57]/10 transition-all placeholder:text-gray-400 dark:text-white shadow-sm"
               />
             </div>
           </div>
 
-          <div className="group">
-            <label className="block text-sm font-semibold text-[#292524] mb-2 pl-1" htmlFor="password">Contraseña</label>
-            <div className="relative flex items-center">
-              <span className="absolute left-4 text-[#78716c] material-symbols-outlined">lock</span>
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-[#292524] dark:text-white uppercase tracking-wider pl-1" htmlFor="password">Contraseña</label>
+            <div className="relative group">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#A17A57] material-symbols-outlined">lock</span>
               <input
                 id="password"
                 type="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full h-14 pl-12 pr-12 bg-white border border-gray-200 rounded-2xl text-base outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-gray-400"
+                className="w-full h-14 pl-12 pr-12 bg-white dark:bg-[#26201B] border-2 border-transparent focus:border-[#A17A57]/20 rounded-2xl text-base outline-none focus:ring-4 focus:ring-[#A17A57]/10 transition-all placeholder:text-gray-400 dark:text-white shadow-sm"
               />
-              <button className="absolute right-4 text-gray-400 hover:text-primary transition-colors flex items-center" type="button">
+              <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#A17A57] transition-colors flex items-center" type="button">
                 <span className="material-symbols-outlined text-[20px]">visibility_off</span>
               </button>
             </div>
           </div>
 
           <div className="flex justify-end">
-            <button type="button" className="text-sm font-medium text-primary hover:text-primary-dark transition-colors">
+            <button type="button" className="text-xs font-bold text-[#A17A57] hover:underline transition-all">
               ¿Olvidaste tu contraseña?
             </button>
           </div>
 
           <button
             type="submit"
-            className="w-full h-14 bg-primary hover:bg-primary-dark text-white font-bold text-lg rounded-2xl shadow-lg shadow-primary/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            className="w-full h-14 bg-[#A17A57] hover:bg-[#8B6A4B] text-white font-bold text-lg rounded-2xl shadow-lg shadow-[#A17A57]/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2 mt-4"
           >
             <span>Iniciar Sesión</span>
             <span className="material-symbols-outlined text-xl">arrow_forward</span>
           </button>
         </form>
 
-        <div className="text-center pb-8 mt-auto pt-10">
-          <p className="text-gray-600 text-sm">
+        <div className="text-center pb-8 mt-auto pt-8">
+          <p className="text-[#78716c] dark:text-[#a8a29e] text-sm">
             ¿Aún no tienes cuenta? {' '}
-            <button onClick={onGoToSignup} className="font-bold text-[#292524] underline decoration-primary decoration-2 underline-offset-4 hover:text-primary transition-colors">Regístrate aquí</button>
+            <button onClick={onGoToSignup} className="font-bold text-[#A17A57] hover:text-[#8B6A4B] transition-colors">Regístrate aquí</button>
           </p>
         </div>
 
@@ -125,15 +141,12 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin, onSetupTestUsers, isSett
           <button
             onClick={onSetupTestUsers}
             disabled={isSettingUp}
-            className={`w-full py-2 rounded-xl border border-dashed border-gray-200 text-gray-400 text-[10px] font-bold uppercase tracking-wider hover:bg-gray-50 transition-colors ${isSettingUp ? 'opacity-50' : ''}`}
+            className={`w-full py-2 rounded-xl border border-dashed border-[#A17A57]/30 text-[#A17A57]/60 text-[10px] font-bold uppercase tracking-wider hover:bg-[#A17A57]/5 transition-colors ${isSettingUp ? 'opacity-50' : ''}`}
           >
             {isSettingUp ? 'Configurando...' : '🔧 Setup Test Users'}
           </button>
         </div>
       </div>
-
-      {/* Footer Gradient Strip */}
-      <div className="h-2 w-full bg-gradient-to-r from-[#e8e0cc] via-[#d2b48c] to-[#e8e0cc] opacity-50"></div>
     </div>
   );
 };

@@ -15,7 +15,9 @@ export const MOCK_CLASSES: YogaClass[] = [
     type: 'Vinyasa',
     level: 'Intermedio',
     room: 'Sala Bambú',
-    status: 'Programada'
+    status: 'Programada',
+    averageRating: 4.9,
+    ratingCount: 124
   },
   {
     id: '2',
@@ -30,7 +32,9 @@ export const MOCK_CLASSES: YogaClass[] = [
     type: 'Hatha',
     level: 'Principiante',
     room: 'Sala Loto',
-    status: 'Finalizada'
+    status: 'Finalizada',
+    averageRating: 4.7,
+    ratingCount: 85
   },
   {
     id: '3',
@@ -45,7 +49,9 @@ export const MOCK_CLASSES: YogaClass[] = [
     type: 'Yin Yoga',
     level: 'Todos los niveles',
     room: 'Garden Room',
-    status: 'Programada'
+    status: 'Programada',
+    averageRating: 5.0,
+    ratingCount: 42
   }
 ];
 

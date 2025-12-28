@@ -13,8 +13,10 @@ export interface User {
   badges: string[];
   weeklyGoal: number;
   sessionsThisWeek: number;
+  sessionsThisMonth?: number;
   createdAt?: Date | any;
   updatedAt?: Date | any;
+  phone?: string;
 }
 
 export interface YogaClass {
@@ -31,6 +33,8 @@ export interface YogaClass {
   level: 'Principiante' | 'Intermedio' | 'Avanzado' | 'Todos los niveles';
   room: string;
   status: 'Programada' | 'En curso' | 'Finalizada' | 'Cancelada';
+  averageRating?: number;
+  ratingCount?: number;
 }
 
 export interface Booking {
@@ -39,6 +43,8 @@ export interface Booking {
   classId: string;
   status: 'Confirmada' | 'Cancelada' | 'Asistida';
   createdAt: Date | any;
+  rating?: number;
+  review?: string;
 }
 
 export interface Retreat {
@@ -82,4 +88,14 @@ export interface FinanceRecord {
   amount: number;
   date: Date | any;
   description: string;
+}
+
+export interface AppNotification {
+  id: string;
+  title: string;
+  message: string;
+  date: Date | any;
+  sender: 'ADMIN' | 'COACH' | 'SYSTEM';
+  read: boolean;
+  type: 'INFO' | 'ALERT' | 'PROMO';
 }

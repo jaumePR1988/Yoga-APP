@@ -4,10 +4,36 @@ import { motion } from 'framer-motion';
 
 interface Props {
     onBack: () => void;
+    onSendNotification: (notif: any) => void;
 }
 
-const AdminMessagingCenter: React.FC<Props> = ({ onBack }) => {
+const AdminMessagingCenter: React.FC<Props> = ({ onBack, onSendNotification }) => {
     const [selectedTopic, setSelectedTopic] = useState('Anuncios');
+    const [message, setMessage] = useState('');
+    const [title, setTitle] = useState('');
+
+    const handleSend = () => {
+        if (!title.trim() || !message.trim()) {
+            alert('Por favor, rellena título y mensaje.');
+            return;
+        }
+
+        const newNotif = {
+            id: `notif-${Date.now()}`,
+            title,
+            message,
+            date: 'Ahora mismo',
+            sender: 'ADMIN',
+            type: selectedTopic === 'Urgentes' ? 'ALERT' : 'INFO',
+            read: false
+        };
+
+        onSendNotification(newNotif);
+        alert('Mensaje enviado a toda la comunidad exitosamente.');
+        setTitle('');
+        setMessage('');
+        onBack();
+    };
 
     return (
         <div className="flex flex-col min-h-screen bg-[#FAF9F6]">
@@ -31,8 +57,8 @@ const AdminMessagingCenter: React.FC<Props> = ({ onBack }) => {
                                     key={t}
                                     onClick={() => setSelectedTopic(t)}
                                     className={`px-4 py-2.5 rounded-2xl text-[11px] font-bold transition-all ${selectedTopic === t
-                                            ? 'bg-[#3C3633] text-white shadow-lg'
-                                            : 'bg-[#FAF9F6] text-[#7F746D] border border-gray-100 hover:border-gray-200'
+                                        ? 'bg-[#3C3633] text-white shadow-lg'
+                                        : 'bg-[#FAF9F6] text-[#7F746D] border border-gray-100 hover:border-gray-200'
                                         }`}
                                 >
                                     {t}
@@ -46,11 +72,15 @@ const AdminMessagingCenter: React.FC<Props> = ({ onBack }) => {
                         <input
                             type="text"
                             placeholder="Asunto llamativo..."
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                             className="w-full bg-[#FAF9F6] border border-gray-100 rounded-2xl py-4 px-5 mb-4 focus:ring-2 focus:ring-[#A07851]/20 outline-none text-sm font-bold"
                         />
                         <textarea
                             rows={6}
                             placeholder="Escribe aquí el contenido principal de tu mensaje a la comunidad..."
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
                             className="w-full bg-[#FAF9F6] border border-gray-100 rounded-[32px] py-4 px-5 focus:ring-2 focus:ring-[#A07851]/20 outline-none text-sm resize-none"
                         />
                     </div>
@@ -66,7 +96,10 @@ const AdminMessagingCenter: React.FC<Props> = ({ onBack }) => {
                         <button className="text-[#A07851] text-xs font-bold px-4 py-2 bg-white rounded-xl shadow-sm border border-gray-100">Subir</button>
                     </div>
 
-                    <button className="w-full btn-primary py-5 text-lg shadow-xl shadow-[#A07851]/30">
+                    <button
+                        onClick={handleSend}
+                        className="w-full btn-primary py-5 text-lg shadow-xl shadow-[#A07851]/30 flex items-center justify-center gap-2"
+                    >
                         Enviar a la Comunidad
                         <span className="material-symbols-outlined">rocket_launch</span>
                     </button>
