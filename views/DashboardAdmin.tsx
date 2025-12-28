@@ -1,187 +1,137 @@
 
-import React from 'react';
-import { MOCK_FINANCES, MOCK_RETIREES } from '../constants.tsx';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Cell, CartesianGrid, Tooltip } from 'recharts';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { User, YogaClass } from '../types';
+import { MOCK_CLASSES } from '../constants';
 
 interface Props {
+  user: User;
   currentView: string;
   setView: (v: string) => void;
 }
 
-const DashboardAdmin: React.FC<Props> = ({ currentView, setView }) => {
-  const chartData = [
-    { name: 'May', ingresos: 4000, gastos: 2400 },
-    { name: 'Jun', ingresos: 3000, gastos: 1398 },
-    { name: 'Jul', ingresos: 2000, gastos: 9800 },
-    { name: 'Ago', ingresos: 2780, gastos: 3908 },
-    { name: 'Sep', ingresos: 1890, gastos: 4800 },
-    { name: 'Oct', ingresos: 2390, gastos: 3800 },
-  ];
-
-  if (currentView === 'finances') {
-    return (
-      <div className="flex flex-col gap-6 pt-12 px-6">
-        <h1 className="text-2xl font-bold">Finanzas Globales</h1>
-        
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-stone-100 shadow-sm">
-            <span className="text-xs font-bold text-stone-400 uppercase">Ingresos Oct</span>
-            <p className="text-2xl font-bold text-green-600 mt-1">$6.8k</p>
-          </div>
-          <div className="bg-white p-5 rounded-2xl border border-stone-100 shadow-sm">
-            <span className="text-xs font-bold text-stone-400 uppercase">Gastos Oct</span>
-            <p className="text-2xl font-bold text-red-600 mt-1">$2.5k</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-2xl border border-stone-100 shadow-sm h-64">
-          <h3 className="text-sm font-bold mb-4">Resumen Semestral</h3>
-          <ResponsiveContainer width="100%" height="80%">
-            <BarChart data={chartData}>
-              <XAxis dataKey="name" fontSize={10} axisLine={false} tickLine={false} />
-              <Bar dataKey="ingresos" fill="#A67C52" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="gastos" fill="#E8E0CC" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="font-bold">Movimientos Recientes</h3>
-          {MOCK_FINANCES.map(item => (
-            <div key={item.id} className="flex items-center justify-between p-3 bg-white rounded-xl shadow-sm border border-stone-50">
-              <div className="flex items-center gap-3">
-                <div className={`size-10 rounded-full flex items-center justify-center ${item.type === 'INGRESO' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
-                  <span className="material-symbols-outlined text-[20px]">{item.type === 'INGRESO' ? 'arrow_downward' : 'arrow_upward'}</span>
-                </div>
-                <div>
-                  <p className="text-sm font-bold">{item.label}</p>
-                  <p className="text-[10px] text-stone-400 uppercase">{item.date}</p>
-                </div>
-              </div>
-              <span className={`text-sm font-bold ${item.type === 'INGRESO' ? 'text-green-600' : 'text-red-600'}`}>
-                {item.type === 'INGRESO' ? '+' : '-'}${item.amount}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (currentView === 'retreats') {
-    return (
-      <div className="flex flex-col gap-6 pt-12 px-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Retiros</h1>
-          <button className="bg-primary text-white p-2 rounded-full shadow-lg">
-            <span className="material-symbols-outlined">add</span>
-          </button>
-        </div>
-
-        <div className="space-y-6">
-          {MOCK_RETIREES.map(r => (
-            <div key={r.id} className="bg-white rounded-3xl overflow-hidden shadow-md border border-stone-100">
-              <div className="h-40 relative">
-                <img src={`https://picsum.photos/seed/${r.id}/600/300`} className="w-full h-full object-cover" alt={r.name} />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <h3 className="text-xl font-bold">{r.name}</h3>
-                  <p className="text-xs opacity-90">{r.location}</p>
-                </div>
-                <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold">
-                  {r.enrolled}/{r.capacity} Pax
-                </div>
-              </div>
-              <div className="p-4 flex items-center justify-between">
-                <div>
-                  <p className="text-[10px] text-stone-400 font-bold uppercase">Estado</p>
-                  <span className={`text-xs font-bold ${r.status === 'Activo' ? 'text-green-600' : 'text-stone-400'}`}>{r.status}</span>
-                </div>
-                <div className="flex gap-2">
-                  <button className="text-xs font-bold text-stone-500 bg-stone-100 px-4 py-2 rounded-xl">Editar</button>
-                  <button className="text-xs font-bold text-white bg-primary-dark px-4 py-2 rounded-xl">Gestionar</button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="bg-bamboo-mid/10 p-6 rounded-3xl border border-dashed border-primary/30 text-center">
-           <span className="material-symbols-outlined text-4xl text-primary/50 mb-2">room_service</span>
-           <h4 className="font-bold text-stone-600">Visualizador de Habitaciones</h4>
-           <p className="text-xs text-stone-400 mt-2">Próximamente: Gráfico interactivo de distribución de camas y participantes.</p>
-        </div>
-      </div>
-    );
-  }
-
+const DashboardAdmin: React.FC<Props> = ({ user, currentView, setView }) => {
   return (
-    <div className="flex flex-col gap-6 pt-12 px-6">
-      <header className="flex items-center justify-between">
+    <div className="flex flex-col min-h-screen bg-[#FAF9F6]">
+      {/* Header */}
+      <header className="px-6 pt-12 flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
-          <img src="https://picsum.photos/seed/admin/100/100" className="size-12 rounded-full border-2 border-primary" alt="Admin" />
+          <img
+            src={user.avatar || "https://picsum.photos/seed/admin/100/100"}
+            className="size-14 rounded-full border-2 border-white shadow-sm"
+            alt="Admin"
+          />
           <div>
-            <h1 className="text-xl font-bold">Hola, Admin</h1>
-            <p className="text-xs text-stone-400">Control total del estudio</p>
+            <p className="text-[#D48C70] text-[10px] font-bold uppercase tracking-widest">Administración</p>
+            <h2 className="text-2xl font-bold yoga-font text-[#3C3633]">{user.name}</h2>
           </div>
         </div>
-        <div className="relative">
-          <span className="material-symbols-outlined text-stone-600">notifications</span>
-          <span className="absolute -top-1 -right-1 size-2 bg-red-500 rounded-full"></span>
+        <div className="flex gap-2">
+          <button className="size-12 rounded-full bg-white shadow-sm flex items-center justify-center text-[#3C3633] border border-gray-100 relative active:scale-95 transition-transform">
+            <span className="material-symbols-outlined">settings</span>
+          </button>
+          <button className="size-12 rounded-full bg-white shadow-sm flex items-center justify-center text-[#3C3633] border border-gray-100 relative active:scale-95 transition-transform">
+            <span className="material-symbols-outlined">notifications</span>
+            <span className="absolute top-3 right-3 size-2.5 bg-[#D48C70] border-2 border-white rounded-full"></span>
+          </button>
         </div>
       </header>
 
-      <section className="grid grid-cols-2 gap-4">
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center gap-2 group cursor-pointer hover:border-primary transition-colors">
-          <div className="size-12 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-3xl">add_circle</span>
+      {/* Operational Stats */}
+      <section className="px-6 mb-8">
+        <div className="bg-[#3C3633] rounded-[40px] p-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-[-30px] right-[-30px] opacity-10 pointer-events-none">
+            <span className="material-symbols-outlined text-[200px]">monitoring</span>
           </div>
-          <span className="text-sm font-bold">Crear Clase</span>
-        </div>
-        <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-100 flex flex-col items-center gap-2 group cursor-pointer hover:border-primary transition-colors">
-          <div className="size-12 bg-stone-100 text-stone-600 rounded-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-3xl">manage_accounts</span>
-          </div>
-          <span className="text-sm font-bold">Usuarios</span>
-        </div>
-      </section>
 
-      <section className="bg-primary/5 p-5 rounded-3xl border border-primary/20">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="font-bold">Ocupación Hoy</h3>
-          <span className="text-xs font-bold text-primary">82% Capacidad</span>
-        </div>
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="size-2 rounded-full bg-green-500"></div>
-            <div className="flex-1 text-xs font-bold">Mañana: Vinyasa Flow</div>
-            <div className="text-[10px] text-stone-400">12/12 Lleno</div>
-          </div>
-          <div className="flex items-center gap-3 text-stone-400">
-            <div className="size-2 rounded-full bg-stone-200"></div>
-            <div className="flex-1 text-xs font-bold">Tarde: Hatha Relax</div>
-            <div className="text-[10px]">8/15 Disponible</div>
+          <div className="relative z-10">
+            <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-6 px-1">Resumen de Octubre</p>
+            <div className="grid grid-cols-2 gap-8 mb-8">
+              <div>
+                <h3 className="text-4xl font-bold mb-1">6.8k</h3>
+                <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">Ingresos Totales</p>
+              </div>
+              <div>
+                <h3 className="text-4xl font-bold mb-1">142</h3>
+                <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest">Socios Activos</p>
+              </div>
+            </div>
+            <div className="pt-6 border-t border-white/10 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-green-400 text-sm">trending_up</span>
+                <span className="text-xs font-bold text-white/80">+12% vs mes anterior</span>
+              </div>
+              <button onClick={() => setView('admin_finance')} className="text-[#A07851] text-xs font-bold uppercase tracking-widest bg-[#A07851]/10 px-4 py-2 rounded-xl">Detalles</button>
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="flex flex-col gap-4">
-        <h3 className="font-bold">Atajos Rápidos</h3>
-        <button onClick={() => setView('finances')} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-stone-100 shadow-sm active:scale-95 transition-transform">
-          <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-stone-400">insights</span>
-            <span className="text-sm font-bold">Análisis Financiero</span>
+      {/* Management Grid */}
+      <section className="px-6 pb-24">
+        <h3 className="text-lg font-bold text-[#3C3633] mb-4 yoga-font px-1">Operaciones</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div
+            onClick={() => setView('admin_classes')}
+            className="premium-card p-6 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer group hover:bg-[#A07851]/5"
+          >
+            <div className="size-14 bg-[#A07851]/10 text-[#A07851] rounded-2xl flex items-center justify-center group-hover:bg-[#A07851] group-hover:text-white transition-all">
+              <span className="material-symbols-outlined text-3xl">event_available</span>
+            </div>
+            <span className="font-bold text-sm text-[#3C3633]">Clases</span>
           </div>
-          <span className="material-symbols-outlined text-stone-300">chevron_right</span>
-        </button>
-        <button onClick={() => setView('retreats')} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-stone-100 shadow-sm active:scale-95 transition-transform">
-          <div className="flex items-center gap-3">
-            <span className="material-symbols-outlined text-stone-400">landscape</span>
-            <span className="text-sm font-bold">Próximos Retiros</span>
+          <div
+            onClick={() => setView('admin_quotas')}
+            className="premium-card p-6 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer group hover:bg-[#A07851]/5"
+          >
+            <div className="size-14 bg-[#94A684]/10 text-[#94A684] rounded-2xl flex items-center justify-center group-hover:bg-[#94A684] group-hover:text-white transition-all">
+              <span className="material-symbols-outlined text-3xl">currency_exchange</span>
+            </div>
+            <span className="font-bold text-sm text-[#3C3633]">Cuotas</span>
           </div>
-          <span className="material-symbols-outlined text-stone-300">chevron_right</span>
-        </button>
-      </div>
+          <div
+            onClick={() => setView('admin_retreats')}
+            className="premium-card p-6 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer group hover:bg-[#A07851]/5"
+          >
+            <div className="size-14 bg-[#D48C70]/10 text-[#D48C70] rounded-2xl flex items-center justify-center group-hover:bg-[#D48C70] group-hover:text-white transition-all">
+              <span className="material-symbols-outlined text-3xl">landscape</span>
+            </div>
+            <span className="font-bold text-sm text-[#3C3633]">Retiros</span>
+          </div>
+          <div
+            onClick={() => setView('admin_comms')}
+            className="premium-card p-6 flex flex-col items-center justify-center gap-3 active:scale-95 transition-transform cursor-pointer group hover:bg-[#A07851]/5"
+          >
+            <div className="size-14 bg-[#3C3633]/10 text-[#3C3633] rounded-2xl flex items-center justify-center group-hover:bg-[#3C3633] group-hover:text-white transition-all">
+              <span className="material-symbols-outlined text-3xl">campaign</span>
+            </div>
+            <span className="font-bold text-sm text-[#3C3633]">Mensajería</span>
+          </div>
+        </div>
+
+        {/* Quick View Status */}
+        <div className="mt-8">
+          <div className="flex items-center justify-between mb-4 px-1">
+            <h3 className="font-bold text-[#3C3633]">Estado de la Sala</h3>
+            <span className="text-[10px] font-bold text-[#7F746D] uppercase tracking-widest">En tiempo real</span>
+          </div>
+          <div className="bg-white rounded-[32px] p-6 shadow-sm border border-gray-100 flex items-center gap-6">
+            <div className="flex-1">
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-xs font-bold text-[#3C3633]">Ocupación Hoy</p>
+                <p className="text-xs font-bold text-[#A07851]">82%</p>
+              </div>
+              <div className="progress-container h-1.5 bg-gray-100">
+                <div className="progress-bar w-[82%] h-full bg-[#A07851] rounded-full"></div>
+              </div>
+            </div>
+            <div className="size-16 rounded-full border-4 border-[#A07851]/20 flex flex-col items-center justify-center">
+              <span className="text-lg font-bold text-[#3C3633]">24</span>
+              <span className="text-[7px] font-bold text-[#7F746D] uppercase tracking-tighter">Socios hoy</span>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

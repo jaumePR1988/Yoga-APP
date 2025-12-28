@@ -1,0 +1,127 @@
+:root {
+    /* Premium Palette - Nature Inspired */
+    --bamboo-light: #FAF9F6;
+    --bamboo-mid: #F1ECE5;
+    --wood-brown: #A07851;
+    --wood-dark: #7D5D3F;
+    --earth-soft: #E8E0CC;
+    --sage-green: #94A684;
+    --terra-cotta: #D48C70;
+    --text-main: #3C3633;
+    --text-muted: #7F746D;
+
+    /* Shadows & Glassmorphism */
+    --shadow-premium: 0 10px 30px -10px rgba(160, 120, 81, 0.15);
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-blur: blur(12px);
+    --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bamboo-light);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+.yoga-font {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+}
+
+/* Premium Components */
+.premium-card {
+    background: white;
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: var(--shadow-premium);
+    border: 1px solid rgba(160, 120, 81, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.premium-card:active {
+    transform: scale(0.98);
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--wood-brown);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 100px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(160, 120, 81, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-primary:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 5px rgba(160, 120, 81, 0.2);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Custom Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Progress Bar */
+.progress-container {
+    height: 8px;
+    background: var(--bamboo-mid);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--wood-brown), var(--terra-cotta));
+    border-radius: 4px;
+    transition: width 1s ease-in-out;
+}

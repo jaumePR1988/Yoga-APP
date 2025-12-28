@@ -6,42 +6,80 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  quotaType?: 'Bonsai' | 'Bambú';
+  quotaType?: 'Bonsai' | 'Bambú' | 'Ninguna';
   sessionsLeft?: number;
   avatar?: string;
+  points: number;
+  badges: string[];
+  weeklyGoal: number;
+  sessionsThisWeek: number;
+  createdAt?: Date | any;
+  updatedAt?: Date | any;
 }
 
 export interface YogaClass {
   id: string;
   name: string;
-  coach: string;
-  time: string;
-  duration: number;
+  coachId: string;
+  coachName: string;
+  time: Date | any;
+  duration: number; // in minutes
   capacity: number;
-  booked: number;
+  bookedCount: number;
   description: string;
   type: string;
   level: 'Principiante' | 'Intermedio' | 'Avanzado' | 'Todos los niveles';
   room: string;
+  status: 'Programada' | 'En curso' | 'Finalizada' | 'Cancelada';
+}
+
+export interface Booking {
+  id: string;
+  studentId: string;
+  classId: string;
+  status: 'Confirmada' | 'Cancelada' | 'Asistida';
+  createdAt: Date | any;
 }
 
 export interface Retreat {
   id: string;
-  name: string;
+  title: string;
   location: string;
+  startDate: Date | any;
+  endDate: Date | any;
+  price: number;
+  capacity: number;
+  enrolledCount: number;
+  status: 'Borrador' | 'Abierto' | 'Finalizado';
+  description: string;
+  imageUrl?: string;
+  totalRevenue?: number;
+  fixedCosts?: {
+    rent: number;
+    staff: number;
+  };
+  perParticipantCosts?: {
+    food: number;
+  };
+}
+
+export interface Challenge {
+  id: string;
+  title: string;
+  description: string;
   startDate: string;
   endDate: string;
-  capacity: number;
-  enrolled: number;
-  status: 'Activo' | 'Borrador' | 'Finalizado';
-  price: number;
+  metric: 'Sesiones' | 'Horas' | 'Calorías' | 'Asistencia';
+  goalValue: number;
+  currentValue: number;
+  participants: string[];
 }
 
 export interface FinanceRecord {
   id: string;
   type: 'INGRESO' | 'GASTO';
-  amount: number;
   category: string;
-  date: string;
-  label: string;
+  amount: number;
+  date: Date | any;
+  description: string;
 }
